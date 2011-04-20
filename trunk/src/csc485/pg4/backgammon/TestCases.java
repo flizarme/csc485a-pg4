@@ -1,3 +1,4 @@
+package csc485.pg4.backgammon;
 import java.util.ArrayList;
 import java.util.Iterator;
 import csc485.pg4.backgammon.gameFramework.*;
