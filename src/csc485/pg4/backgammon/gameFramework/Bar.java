@@ -1,23 +1,30 @@
 package csc485.pg4.backgammon.gameFramework;
 
-public class Bar implements ICheckerSpot {
-
-	@Override
-	public void addChecker() {
-		// TODO Auto-generated method stub
-
+public class Bar implements ICheckerSpot 
+{
+	private int numCheckers;
+	
+	public Bar()
+	{
+		numCheckers = 0;
 	}
 
 	@Override
-	public void removeChecker() {
-		// TODO Auto-generated method stub
-
+	public void addChecker() 
+	{
+		numCheckers++;
 	}
 
 	@Override
-	public int getNumOfCheckers() {
-		// TODO Auto-generated method stub
-		return 0;
+	public void removeChecker() 
+	{
+		numCheckers--;
+	}
+
+	@Override
+	public int getNumOfCheckers() 
+	{
+		return numCheckers;
 	}
 
 }
