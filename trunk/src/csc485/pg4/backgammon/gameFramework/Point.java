@@ -13,14 +13,6 @@ public class Point implements ICheckerSpot
 		numCheckers = 0;
 	}
 	
-	//----------overloaded constructor-------------
-	public Point(String coordinates, Player occupant)
-	{
-		coords = coordinates;
-		playerOccupying = occupant;
-		numCheckers = 0;
-	}
-	
 	//----------------------overloaded constructor------------------------
 	public Point(String coordinates, Player occupant, int numberOfCheckers)
 	{
