@@ -8,7 +8,7 @@ public class TestCases
 	{
 		//---------Test Cases------------
 		
-		//Create objects
+		/*Create objects*/
 		Player p1 = new Player("Blake",Checker.Black,false);
 		ArrayList<MoveException> exceptions = new ArrayList<MoveException>();
 		Die d1 = new Die(DieName.D1);
@@ -17,7 +17,7 @@ public class TestCases
 		CoordinateException badCoordinate = new CoordinateException();
 		NoException noException = new NoException();
 		
-		//---------Test Player and Dice Classes-------------
+		/*---------Test Player and Dice Classes-------------*/
 		System.out.println(p1.toString());
 		d1.roll();
 		d2.roll();
@@ -25,7 +25,7 @@ public class TestCases
 		System.out.println("-----");
 		System.out.println(d1.toString() + "\n" + d2.toString());
 		
-		//---------Test Exception Classes----------------------
+		/*---------Test Exception Classes----------------------*/
 		System.out.println(badInput.toString() + "\n" + badCoordinate.toString() + "\n" + noException.toString());
 		
 		exceptions.add(badInput);
@@ -49,6 +49,7 @@ public class TestCases
 			}
 			
 		}
+		
 	}
 
 }
