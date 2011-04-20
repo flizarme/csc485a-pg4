@@ -1,3 +1,4 @@
+package csc485.pg4.backgammon;
 
 import csc485.pg4.backgammon.ai.*;
 import csc485.pg4.backgammon.gameFramework.*;
