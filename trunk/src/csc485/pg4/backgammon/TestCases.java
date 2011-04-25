@@ -15,7 +15,7 @@ public class TestCases
 		ArrayList<MoveException> exceptions = new ArrayList<MoveException>();
 		Die d1 = new Die(DieName.D1);
 		Die d2 = new Die(DieName.D2);
-		//Board bTest = new Board(p1, p2);
+		Board bTest = new Board(p1, p2);
 		FormatException badInput = new FormatException();
 		CoordinateException badCoordinate = new CoordinateException();
 		NoException noException = new NoException();
@@ -45,7 +45,7 @@ public class TestCases
 			if(curObj instanceof NoException)
 			{
 				System.out.println("We would display the board since there are no problems");
-				//System.out.println(bTest.toString());
+				System.out.println(bTest.toString());
 			}
 			else
 			{
