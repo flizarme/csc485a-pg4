@@ -21,36 +21,36 @@ public class Board
 	
 	private void createBoard()
 	{
-		for(int i = 1; i <= numPoints; i++)
+		for(int i = 0; i < numPoints; i++)
 		{
 			switch(i)
 			{
-			case 1:
-				points[i] = new Point(Integer.toString(i), red, 2);
+			case 0:
+				points[i] = new Point(Integer.toString(i+1), red, 2);
 				break;
-			case 6:
-				points[i] = new Point(Integer.toString(i), black, 2);
+			case 5:
+				points[i] = new Point(Integer.toString(i+1), black, 2);
 				break;
-			case 8:
-				points[i] = new Point(Integer.toString(i), black, 3);
+			case 7:
+				points[i] = new Point(Integer.toString(i+1), black, 3);
+				break;
+			case 11:
+				points[i] = new Point(Integer.toString(i+1), red, 5);
 				break;
 			case 12:
-				points[i] = new Point(Integer.toString(i), red, 5);
+				points[i] = new Point(Integer.toString(i+1), black, 5);
 				break;
-			case 13:
-				points[i] = new Point(Integer.toString(i), black, 5);
+			case 16:
+				points[i] = new Point(Integer.toString(i+1), red, 3);
 				break;
-			case 17:
-				points[i] = new Point(Integer.toString(i), red, 3);
+			case 18:
+				points[i] = new Point(Integer.toString(i+1), red, 5);
 				break;
-			case 19:
-				points[i] = new Point(Integer.toString(i), red, 5);
-				break;
-			case 24:
-				points[i] = new Point(Integer.toString(i), black, 2);
+			case 23:
+				points[i] = new Point(Integer.toString(i+1), black, 2);
 				break;
 			default:
-				points[i] = new Point(Integer.toString(i));
+				points[i] = new Point(Integer.toString(i+1));
 				break;
 			}
 		}
@@ -59,8 +59,42 @@ public class Board
 	@Override
 	public String toString()
 	{
-		//TODO: implement board display
-		return "";
+		String str = ""; 
+		String top = "";
+		String bottom = "";
+		
+		for (int i = 12; i < 24; i++)
+		{
+			char color = ' ';
+			if(points[i].getPlayerOccupying() == red)
+			{
+				color = 'r';
+			}
+			else if(points[i].getPlayerOccupying() == black)
+			{
+				color = 'b';
+			}
+				
+			top+=" [" + color + points[i].getNumOfCheckers() + "]";
+		}
+
+		str="  13   14   15   16   17   18   19   20   21   22   23   24" + '\n' + top +'\n';
+		for (int j = 0; j < 12; j++)
+		{
+			char color = ' ';
+			if(points[j].getPlayerOccupying() == red)
+			{
+				color = 'r';
+			}
+			else if(points[j].getPlayerOccupying() == black)
+			{
+				color = 'b';
+			}
+				
+			bottom= " [" + color + points[j].getNumOfCheckers() + "]" + bottom;
+		}
+		str+=bottom + '\n' + "  12   11   10    9    8    7    6    5    4    3    2    1";
+		return str;
 	}
 	
 
