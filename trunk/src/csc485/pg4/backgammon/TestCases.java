@@ -18,7 +18,7 @@ public class TestCases
 		Board bTest = new Board(p1, p2);
 		FormatException badInput = new FormatException();
 		CoordinateException badCoordinate = new CoordinateException();
-		NoException noException = new NoException();
+		NoException noException = new NoException(bTest);
 		
 		/*---------Test Player and Dice Classes-------------*/
 		System.out.println(p1.toString());
@@ -29,7 +29,7 @@ public class TestCases
 		System.out.println(d1.toString() + "\n" + d2.toString());
 		
 		/*---------Test Exception Classes----------------------*/
-		System.out.println(badInput.toString() + "\n" + badCoordinate.toString() + "\n" + noException.toString());
+		//System.out.println(badInput.toString() + "\n" + badCoordinate.toString() + "\n" + noException.toString());
 		
 		exceptions.add(badInput);
 		exceptions.add(badCoordinate);
@@ -40,18 +40,7 @@ public class TestCases
 		
 		while(itr.hasNext())
 		{
-			MoveException curObj = itr.next();
-			
-			if(curObj instanceof NoException)
-			{
-				System.out.println("We would display the board since there are no problems");
-				System.out.println(bTest.toString());
-			}
-			else
-			{
-				System.out.println(curObj.toString());
-			}
-			
+			System.out.println(itr.next().toString());
 		}
 		
 	}
