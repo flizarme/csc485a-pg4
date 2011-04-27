@@ -6,14 +6,17 @@ public class Player
 	private String name;
 	public boolean isComputer;
 	
-	public Player(String aName, Checker aColor, boolean aComputer)
+	public Player(String aName, boolean aComputer)
 	{
 		this.name = aName;
-		this.color = aColor;
 		this.isComputer = aComputer;
 	}
 	
-	//This was not included in our class diagram but I think we may need it
+	public void setColor(Checker aColor)
+	{
+		this.color = aColor;
+	}
+	
 	public Checker getColor()
 	{
 		return this.color;
