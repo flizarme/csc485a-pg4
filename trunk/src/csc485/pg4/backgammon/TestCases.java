@@ -10,8 +10,8 @@ public class TestCases
 		//---------Test Cases------------
 		
 		/*Create objects*/
-		Player p1 = new Player("Blake",Checker.Black,false);
-		Player p2 = new Player("John", Checker.Red, false);
+		Player p1 = new Player("Blake", false);
+		Player p2 = new Player("John", false);
 		ArrayList<MoveException> exceptions = new ArrayList<MoveException>();
 		Die d1 = new Die(DieName.D1);
 		Die d2 = new Die(DieName.D2);
