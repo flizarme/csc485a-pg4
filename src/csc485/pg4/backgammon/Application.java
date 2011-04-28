@@ -32,7 +32,7 @@ public class Application
 			//and prompt them to roll the dice.
 			if(game.isBeginningOfTurn)
 			{
-				System.out.println("Current Player: " + game.currentPlayer.toString());
+				System.out.println("Current Player: " + game.getCurrentPlayer().toString());
 				System.out.println(game.getBoard());
 				System.out.println("Press enter to roll dice:");
 				System.in.read();

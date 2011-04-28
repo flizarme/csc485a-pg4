@@ -4,7 +4,7 @@ public class Game
 {
 	private Board gameBoard;
 	private Player player1, player2;
-	public Player currentPlayer;
+	private Player currentPlayer;
 	private Die d1,d2;
 	private boolean isDoubles, canBearOff;
 	public boolean isBeginningOfTurn;
@@ -89,6 +89,11 @@ public class Game
 	public String getBoard()
 	{
 		return gameBoard.toString();
+	}
+	
+	public Player getCurrentPlayer()
+	{
+		return currentPlayer;
 	}
 	
 	public void moveChecker()
