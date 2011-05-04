@@ -1,5 +1,6 @@
 package csc485.pg4.backgammon.gameFramework;
 
+
 public class Game 
 {
 	private Board gameBoard;
@@ -8,6 +9,7 @@ public class Game
 	private Die d1,d2;
 	private boolean isDoubles, canBearOff;
 	public boolean isBeginningOfTurn;
+	public boolean firstTurnOfGame;
 	
 	public Game(Player p1, Player p2)
 	{
@@ -16,10 +18,10 @@ public class Game
 		d1 = new Die(DieName.D1);
 		d2 = new Die(DieName.D2);
 		currentPlayer = null;
-		gameBoard = new Board(p1,p2);
 		isDoubles = false;
 		canBearOff = false;
 		isBeginningOfTurn = true;
+		firstTurnOfGame = true;
 	}
 	
 	public String decideTurnOrder()
@@ -42,6 +44,7 @@ public class Game
 				
 				player1.setColor(Checker.Red);
 				player2.setColor(Checker.Black);
+				gameBoard = new Board(player1,player2);
 				currentPlayer = player1;
 			}
 			else if(d1Val < d2Val)
@@ -53,6 +56,7 @@ public class Game
 				
 				player2.setColor(Checker.Red);
 				player1.setColor(Checker.Black);
+				gameBoard = new Board(player2,player1);
 				currentPlayer = player2;
 			}
 			else
@@ -61,7 +65,7 @@ public class Game
 			}
 		}
 		while(d1Val == d2Val);
-		
+
 		return msg;
 	}
 	
@@ -71,19 +75,23 @@ public class Game
 			currentPlayer = player2;
 		else
 			currentPlayer = player1;
+		
+		d1.isUsed = false;
+		d2.isUsed = false;
 	}
 	
-	public String rollDice()
+	public void rollDice()
 	{
 		d1.roll();
 		d2.roll();
 
-		if(d1.getValue() == d2.getValue())
-			isDoubles = true;
-		else
-			isDoubles = false;
-		
-		return "die 1 = " + d1.getValue() + "\n" + "die 2 = " + d2.getValue();
+		isDoubles = d1.getValue() == d2.getValue();
+	}
+	
+	public String getDice()
+	{
+		return "die 1 = " + d1.getValue() + "(" + (d1.isUsed ? "used" : "not used") + ")" + "\n" 
+				+ "die 2 = " + d2.getValue() + "(" + (d2.isUsed ? "used" : "not used") + ")";
 	}
 	
 	public String getBoard()
@@ -96,9 +104,76 @@ public class Game
 		return currentPlayer;
 	}
 	
-	public void moveChecker()
+	public MoveException moveChecker(String coords)
 	{
-		//TODO: Game.moveChecker()
+		Die dieToUse;
+		Point pointToUse;
+		Point destination;
+		String[] temp;
+		String tempDie;
+		int tempPoint,dieVal;
+		
+		//------Get the user's selected die---------
+		temp = coords.split(",");
+		tempDie = temp[0];
+		
+		if(tempDie.equalsIgnoreCase("d1"))
+			dieToUse = this.d1;
+		else if(tempDie.equalsIgnoreCase("d2"))
+			dieToUse = this.d2;
+		else
+			return new FormatException();
+		
+		if(dieToUse.isUsed == true)
+			return new CoordinateException();
+		
+		//---------Get the user's selected point--------
+		try{tempPoint = Integer.parseInt(temp[1]);}
+		//they didn't enter a valid number
+		catch(Exception e){return new FormatException();}
+		
+		try{pointToUse = gameBoard.points[tempPoint];}
+		//They entered a number that is not a point
+		catch(Exception e){return new FormatException();}
+			
+		//-----Input was formatted correctly. Now try to move------
+		dieVal = dieToUse.getValue();
+		if(pointToUse.getPlayerOccupying() != this.currentPlayer)
+			return new CoordinateException();
+		
+		//Make sure they choose a destination in bounds
+		try{
+			if(currentPlayer.getColor() == Checker.Red)
+				destination = gameBoard.points[pointToUse.getCoordinates() + dieVal];
+			else
+				destination = gameBoard.points[pointToUse.getCoordinates() - dieVal];
+			}
+		catch(Exception e){return new CoordinateException();}
+		
+		
+		if(destination.getPlayerOccupying() == null || destination.getPlayerOccupying() == currentPlayer)
+		{
+			pointToUse.removeChecker();
+			destination.addChecker();
+			destination.setPlayerOccupying(currentPlayer);
+			dieToUse.isUsed = true;
+		}
+		else
+			if(destination.getNumOfCheckers() == 1)
+				hit();
+			else
+				return new CoordinateException();
+			
+		
+		
+		//----move successful. no exceptions----------
+		return new NoException(this.gameBoard);
+			
+	}
+	
+	public boolean bothDieUsed()
+	{
+		return d1.isUsed && d2.isUsed;
 	}
 	
 	private void hit()

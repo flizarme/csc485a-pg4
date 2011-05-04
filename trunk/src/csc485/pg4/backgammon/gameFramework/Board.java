@@ -10,7 +10,8 @@ public class Board
 	
 	public Board(Player red, Player black)
 	{
-		points = new Point[numPoints];
+		//+2 is one for each spot to bear off
+		points = new Point[numPoints+2];
 		this.red = red;
 		this.black = black;
 		redBar = new Bar();
@@ -21,36 +22,36 @@ public class Board
 	
 	private void createBoard()
 	{
-		for(int i = 0; i < numPoints; i++)
+		for(int i = 1; i <= numPoints; i++)
 		{
 			switch(i)
 			{
-			case 0:
-				points[i] = new Point(Integer.toString(i+1), red, 2);
+			case 1:
+				points[i] = new Point(i, red, 2);
 				break;
-			case 5:
-				points[i] = new Point(Integer.toString(i+1), black, 2);
+			case 6:
+				points[i] = new Point(i, black, 2);
 				break;
-			case 7:
-				points[i] = new Point(Integer.toString(i+1), black, 3);
-				break;
-			case 11:
-				points[i] = new Point(Integer.toString(i+1), red, 5);
+			case 8:
+				points[i] = new Point(i, black, 3);
 				break;
 			case 12:
-				points[i] = new Point(Integer.toString(i+1), black, 5);
+				points[i] = new Point(i, red, 5);
 				break;
-			case 16:
-				points[i] = new Point(Integer.toString(i+1), red, 3);
+			case 13:
+				points[i] = new Point(i, black, 5);
 				break;
-			case 18:
-				points[i] = new Point(Integer.toString(i+1), red, 5);
+			case 17:
+				points[i] = new Point(i, red, 3);
 				break;
-			case 23:
-				points[i] = new Point(Integer.toString(i+1), black, 2);
+			case 19:
+				points[i] = new Point(i, red, 5);
+				break;
+			case 24:
+				points[i] = new Point(i, black, 2);
 				break;
 			default:
-				points[i] = new Point(Integer.toString(i+1));
+				points[i] = new Point(i);
 				break;
 			}
 		}
@@ -63,7 +64,7 @@ public class Board
 		String top = "";
 		String bottom = "";
 		
-		for (int i = 12; i < 24; i++)
+		for (int i = 13; i <= 24; i++)
 		{
 			char color = ' ';
 			if(points[i].getPlayerOccupying() == red)
@@ -77,7 +78,7 @@ public class Board
 				
 			top+=" [" + color + points[i].getNumOfCheckers() + "]";
 			
-			if(i == 17)
+			if(i == 18)
 				top += "  | ";
 		}
 
@@ -85,7 +86,7 @@ public class Board
 			   "|  13   14   15   16   17   18   |   19   20   21   22   23   24  |" + '\n' + 
 			   "|" + top + " |\n";
 		str += "|--------------------------------+--------------------------------|\n";
-		for (int j = 0; j < 12; j++)
+		for (int j = 1; j <= 12; j++)
 		{
 			char color = ' ';
 			if(points[j].getPlayerOccupying() == red)
@@ -99,7 +100,7 @@ public class Board
 				
 			bottom= " [" + color + points[j].getNumOfCheckers() + "]" + bottom;
 			
-			if(j == 5)
+			if(j == 6)
 				bottom = "  | " + bottom;
 		}
 		str+= "|" + bottom + " |\n" + 

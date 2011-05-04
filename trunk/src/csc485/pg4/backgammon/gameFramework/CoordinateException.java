@@ -4,7 +4,7 @@ public class CoordinateException extends MoveException
 {
 	public CoordinateException()
 	{
-		super.message = "The coordinate entered was not recognized";
+		super.message = "The coordinate or die entered was invalid";
 	}
 	
 	@Override

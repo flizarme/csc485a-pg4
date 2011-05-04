@@ -26,6 +26,7 @@ public class Application
 		
 	//-----------After game has started---------------------------
 		
+		//TODO: Figure out how to handle this section with computer player
 		do
 		{
 			//If it is the beginning of a players turn display the board
@@ -34,16 +35,22 @@ public class Application
 			{
 				System.out.println("Current Player: " + game.getCurrentPlayer().toString());
 				System.out.println(game.getBoard());
-				System.out.println("Press enter to roll dice:");
-				System.in.read();
-				System.out.println(game.rollDice());
+				if(!game.firstTurnOfGame)
+				{
+					System.out.println("Press enter to roll dice:");
+					System.in.read();
+					game.rollDice();
+				}
 				game.isBeginningOfTurn = false;
+				game.firstTurnOfGame = false;
 			}
 			
 			//Get users input. First check for a known command entered. If no known
 			//command is detected then assume they entered die/coords for a move
 			//and attempt to play it. Exceptions will handle the rest when we get
 			//there
+			System.out.println("Current Player: " + game.getCurrentPlayer().toString());
+			System.out.println(game.getDice());
 			
 			choice = getInput();
 			
@@ -60,9 +67,13 @@ public class Application
 				//TODO: write game.undo() code
 				continue;//temporary
 			else
-				continue;//(this is temporary to get rid of errors)
-				//TODO: enter code that attempts a move
-				//After players are swapped set isBeginningOfTurn to True
+				System.out.println(game.moveChecker(choice).toString());
+			
+			if(game.bothDieUsed())
+			{
+				game.swapPlayers();
+				game.isBeginningOfTurn = true;
+			}
 			
 		}
 		while(!choice.equals("quit"));
@@ -163,5 +174,7 @@ public class Application
 		System.out.println("To move a checker use this format: <die>,<point>");
 		System.out.println("ex. To use die1 and move the checker at point 3");
 		System.out.println("you would type d1,3");
+		System.out.println("If it is the first move of the game you will");
+		System.out.println("use the dice rolled to decide the turn order.");
 	}
 }
