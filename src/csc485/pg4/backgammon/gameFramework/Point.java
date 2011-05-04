@@ -4,24 +4,25 @@ public class Point implements ICheckerSpot
 {
 	private Player playerOccupying;
 	private int numCheckers;
-	private String coords;
+	private int coords;
 	
 	//---------constructor---------
-	public Point(String coordinates)
+	public Point(int coordinates)
 	{
 		coords = coordinates;
 		numCheckers = 0;
+		playerOccupying = null;
 	}
 	
 	//----------------------overloaded constructor------------------------
-	public Point(String coordinates, Player occupant, int numberOfCheckers)
+	public Point(int coordinates, Player occupant, int numberOfCheckers)
 	{
 		coords = coordinates;
 		playerOccupying = occupant;
 		numCheckers = numberOfCheckers;
 	}
 	
-	public String getCoordinates()
+	public int getCoordinates()
 	{
 		return coords;
 	}
@@ -40,12 +41,15 @@ public class Point implements ICheckerSpot
 	public void addChecker() 
 	{
 		numCheckers++;
+		
 	}
 
 	@Override
 	public void removeChecker() 
 	{
 		numCheckers--;
+		if (numCheckers <= 0)
+			playerOccupying = null;
 	}
 
 	@Override
