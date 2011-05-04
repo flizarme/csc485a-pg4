@@ -24,7 +24,7 @@ public class Board
 	{
 		for(int i = 0; i <= numPoints+1; i++)
 		{
-			/* code for the real board
+			
 			switch(i)
 			{
 			case 1:
@@ -55,9 +55,9 @@ public class Board
 				points[i] = new Point(i);
 				break;
 			}
-			*/
 			
 			//setup board for bear off testing
+			/*
 			switch(i)
 			{
 			case 1:
@@ -100,6 +100,7 @@ public class Board
 				points[i] = new Point(i);
 				break;
 			}
+			*/
 		}
 	}
 	
@@ -130,7 +131,7 @@ public class Board
 
 		str=   "+------------------------------------------------------------------------+ R Scored\n"+
 			   "|  13   14   15   16   17   18   |   19   20   21   22   23   24  | Bbar |" + " [ " + points[25].getNumOfCheckers() + "]\n" + 
-			   "|" + top + " | [ " + redBar.getNumOfCheckers()+ "] | \n";
+			   "|" + top + " | [ " + blackBar.getNumOfCheckers()+ "] | \n";
 		str += "|--------------------------------+--------------------------------|      |\n";
 		for (int j = 1; j <= 12; j++)
 		{

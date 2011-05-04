@@ -167,7 +167,7 @@ public class Game
 		}
 		else
 			if(destination.getNumOfCheckers() == 1)
-				hit();
+				hit(pointToUse, destination, dieToUse);
 			else
 				return new CoordinateException();
 			
@@ -183,9 +183,30 @@ public class Game
 		return d1.isUsed && d2.isUsed;
 	}
 	
-	private void hit()
+	private void hit(Point pointToUse, Point destination, Die dieToUse)
 	{
-		//TODO: Game.hit()
+		pointToUse.removeChecker();
+		
+		if(currentPlayer.getColor() == Checker.Red)
+		{
+			//if red made the hit black is the one getting moved to the bar
+			gameBoard.blackBar.addChecker();
+			if(player1.getColor()==Checker.Black)
+				player1.onBar=true;
+			else
+				player2.onBar=true;
+		}
+		else
+		{
+			//if black made the hit red is getting moved to the bar
+			gameBoard.redBar.addChecker();
+			if(player1.getColor()==Checker.Red)
+				player1.onBar=true;
+			else
+				player2.onBar=true;
+		}
+		destination.setPlayerOccupying(currentPlayer);
+		dieToUse.isUsed = true;
 	}
 	
 	public MoveException bearOff(Point pointToUse, Die dieToUse, int dieValue)
@@ -248,7 +269,7 @@ public class Game
 		}
 		else
 			if(destination.getNumOfCheckers() == 1)
-				hit();
+				hit(pointToUse, destination, dieToUse);
 			else
 				return new CoordinateException();
 			
