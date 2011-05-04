@@ -4,11 +4,13 @@ public class Player
 {
 	private Checker color;
 	private String name;
-	public boolean isComputer;
+	public boolean isComputer, canBearOff, onBar;
 	
 	public Player(String aName, boolean aComputer)
 	{
 		this.name = aName;
+		this.canBearOff = false;
+		this.onBar=false;
 		this.isComputer = aComputer;
 	}
 	
