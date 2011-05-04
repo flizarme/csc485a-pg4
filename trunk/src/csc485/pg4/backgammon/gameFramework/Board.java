@@ -24,6 +24,7 @@ public class Board
 	{
 		for(int i = 0; i <= numPoints+1; i++)
 		{
+			/* code for the real board
 			switch(i)
 			{
 			case 1:
@@ -49,6 +50,51 @@ public class Board
 				break;
 			case 24:
 				points[i] = new Point(i, black, 2);
+				break;
+			default:
+				points[i] = new Point(i);
+				break;
+			}
+			*/
+			
+			//setup board for bear off testing
+			switch(i)
+			{
+			case 1:
+				points[i] = new Point(i, black, 2);
+				break;
+			case 2:
+				points[i] = new Point(i, black, 2);
+				break;
+			case 3:
+				points[i] = new Point(i, black, 3);
+				break;
+			case 4:
+				points[i] = new Point(i, black, 3);
+				break;
+			case 5:
+				points[i] = new Point(i, black, 3);
+				break;
+			case 6:
+				points[i] = new Point(i, black, 3);
+				break;
+			case 19:
+				points[i] = new Point(i, red, 2);
+				break;	
+			case 20:
+				points[i] = new Point(i, red, 2);
+				break;
+			case 21:
+				points[i] = new Point(i, red, 3);
+				break;
+			case 22:
+				points[i] = new Point(i, red, 3);
+				break;
+			case 23:
+				points[i] = new Point(i, red, 3);
+				break;
+			case 24:
+				points[i] = new Point(i, red, 3);
 				break;
 			default:
 				points[i] = new Point(i);
@@ -82,7 +128,7 @@ public class Board
 				top += "  | ";
 		}
 
-		str=   "+------------------------------------------------------------------------+ B Scored\n"+
+		str=   "+------------------------------------------------------------------------+ R Scored\n"+
 			   "|  13   14   15   16   17   18   |   19   20   21   22   23   24  | Bbar |" + " [ " + points[25].getNumOfCheckers() + "]\n" + 
 			   "|" + top + " | [ " + redBar.getNumOfCheckers()+ "] | \n";
 		str += "|--------------------------------+--------------------------------|      |\n";
@@ -105,7 +151,7 @@ public class Board
 		}
 		str+= "|" + bottom + " | [ " + redBar.getNumOfCheckers()+ "] | \n" + 
 			  "|  12   11   10    9    8    7   |    6    5    4    3    2    1  | Rbar |" + " [ " + points[0].getNumOfCheckers() + "]\n" +
-			  "+------------------------------------------------------------------------+  R Scored\n";
+			  "+------------------------------------------------------------------------+  B Scored\n";
 		return str;
 	}
 	

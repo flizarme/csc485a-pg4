@@ -7,7 +7,7 @@ public class Game
 	private Player player1, player2;
 	private Player currentPlayer;
 	private Die d1,d2;
-	private boolean isDoubles, canBearOff;
+	private boolean isDoubles;
 	public boolean isBeginningOfTurn;
 	public boolean firstTurnOfGame;
 	
@@ -19,7 +19,6 @@ public class Game
 		d2 = new Die(DieName.D2);
 		currentPlayer = null;
 		isDoubles = false;
-		canBearOff = false;
 		isBeginningOfTurn = true;
 		firstTurnOfGame = true;
 	}
@@ -141,7 +140,12 @@ public class Game
 		if(pointToUse.getPlayerOccupying() != this.currentPlayer)
 			return new CoordinateException();
 		
-		//Make sure they choose a destination in bounds
+		//-----Check if the player can Bear off-----
+
+		if(currentPlayer.canBearOff=checkBearOff())
+			return bearOff(pointToUse, dieToUse, dieVal);
+		
+		//-----Make sure they choose a destination in bounds-----
 		try{
 			if(currentPlayer.getColor() == Checker.Red)
 				destination = gameBoard.points[pointToUse.getCoordinates() + dieVal];
@@ -149,6 +153,9 @@ public class Game
 				destination = gameBoard.points[pointToUse.getCoordinates() - dieVal];
 			}
 		catch(Exception e){return new CoordinateException();}
+		
+		if(destination == gameBoard.points[0] || destination == gameBoard.points[25])
+			return new CoordinateException();
 		
 		
 		if(destination.getPlayerOccupying() == null || destination.getPlayerOccupying() == currentPlayer)
@@ -181,9 +188,109 @@ public class Game
 		//TODO: Game.hit()
 	}
 	
-	public void bearOff()
+	public MoveException bearOff(Point pointToUse, Die dieToUse, int dieValue)
+	{	
+		int tempCoord = pointToUse.getCoordinates();
+		Point destination = null;
+
+		if(currentPlayer.getColor() == Checker.Red)
+		{
+			while(tempCoord >= 19)
+			{
+				//checks behind pointToMove to make sure there are no required moves behind it.
+				if(gameBoard.points[tempCoord-1].getNumOfCheckers() > 0 && dieValue != 25- pointToUse.getCoordinates())
+					return new CoordinateException();				
+				tempCoord--;
+			}
+			//There are no points before the die value that must be moved.  Player can bear off the piece.
+			
+			//If the player rolls a value greater than the array and must move a piece closer to the score
+			//this prevents an out of bounds error
+			if(pointToUse.getCoordinates() + dieValue > 25)
+			{
+				dieValue-=(pointToUse.getCoordinates() + dieValue - 25);
+				destination = gameBoard.points[pointToUse.getCoordinates() + dieValue];
+			}
+			else
+				destination = gameBoard.points[pointToUse.getCoordinates() + dieValue];
+			
+		}
+		else
+		{
+			while(tempCoord <=6)
+			{
+				//checks behind pointToMove to make sure there are no required moves behind it
+				if(gameBoard.points[tempCoord + 1].getNumOfCheckers() > 0 && dieValue != pointToUse.getCoordinates())
+					return new CoordinateException();
+				tempCoord++;
+			}
+			
+			//There are no points before the die value that must be moved.  Player can bear off a piece
+			
+			//If the player rolls a value greater than the array and must move a piece closer to the score
+			//this prevents an out of bounds error
+			if(pointToUse.getCoordinates() < dieValue)
+			{
+				dieValue=pointToUse.getCoordinates();
+				destination = gameBoard.points[pointToUse.getCoordinates() - dieValue];
+			}
+			else
+				destination = gameBoard.points[pointToUse.getCoordinates() - dieValue];
+		}
+		
+		//code from Move
+		if(destination.getPlayerOccupying() == null || destination.getPlayerOccupying() == currentPlayer)
+		{
+			pointToUse.removeChecker();
+			destination.addChecker();
+			destination.setPlayerOccupying(currentPlayer);
+			dieToUse.isUsed = true;
+		}
+		else
+			if(destination.getNumOfCheckers() == 1)
+				hit();
+			else
+				return new CoordinateException();
+			
+		
+		
+		//----move successful. no exceptions----------
+		return new NoException(this.gameBoard);
+		
+	}
+	
+	public boolean checkBearOff()
 	{
-		//TODO: Game.bearOff()
+		int tempCoord;
+		
+		if(currentPlayer.getColor() == Checker.Red)
+		{
+			tempCoord=18;
+			while(tempCoord >= 1)
+			{
+				//only prevents a bear off if the player has his own pieces outside of the home base
+				if(gameBoard.points[tempCoord].getPlayerOccupying()==currentPlayer)
+					return false;
+				tempCoord--;
+			}
+			if(gameBoard.redBar.getNumOfCheckers() != 0)
+				return false;
+		}
+		else
+		{
+			tempCoord=7;
+			while(tempCoord <= 24)
+			{
+				//only prevents a bear off if the player has his own pieces outside of the home base
+				if(gameBoard.points[tempCoord].getPlayerOccupying()==currentPlayer)
+					return false;
+				tempCoord++;
+			}
+			if(gameBoard.blackBar.getNumOfCheckers() != 0)
+				return false;
+		}
+		
+		return true;
 	}
 	
 	public void barMove()
