@@ -24,7 +24,7 @@ public class Board
 	{
 		for(int i = 0; i <= numPoints+1; i++)
 		{
-			
+			/*
 			switch(i)
 			{
 			case 1:
@@ -55,9 +55,9 @@ public class Board
 				points[i] = new Point(i);
 				break;
 			}
-			
+			*/
 			//setup board for bear off testing
-			/*
+			
 			switch(i)
 			{
 			case 1:
@@ -100,7 +100,7 @@ public class Board
 				points[i] = new Point(i);
 				break;
 			}
-			*/
+			
 		}
 	}
 	
