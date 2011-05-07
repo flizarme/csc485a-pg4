@@ -3,8 +3,8 @@ package csc485.pg4.backgammon.gameFramework;
 public class Board 
 {
 	public Point[] points;
-	public Bar redBar;
-	public Bar blackBar;
+	//public Bar redBar;
+	//public Bar blackBar;
 	private final int numPoints = 24;
 	private Player red, black;
 	
@@ -14,8 +14,8 @@ public class Board
 		points = new Point[numPoints+2];
 		this.red = red;
 		this.black = black;
-		redBar = new Bar();
-		blackBar = new Bar();
+		//redBar = new Bar();
+		//blackBar = new Bar();
 		createBoard();
 		
 	}
@@ -24,7 +24,7 @@ public class Board
 	{
 		for(int i = 0; i <= numPoints+1; i++)
 		{
-			/*
+			
 			switch(i)
 			{
 			case 1:
@@ -55,9 +55,9 @@ public class Board
 				points[i] = new Point(i);
 				break;
 			}
-			*/
-			//setup board for bear off testing
 			
+			//setup board for bear off testing
+			/*
 			switch(i)
 			{
 			case 1:
@@ -100,7 +100,7 @@ public class Board
 				points[i] = new Point(i);
 				break;
 			}
-			
+			*/
 		}
 	}
 	
@@ -131,7 +131,7 @@ public class Board
 
 		str=   "+------------------------------------------------------------------------+ R Scored\n"+
 			   "|  13   14   15   16   17   18   |   19   20   21   22   23   24  | Bbar |" + " [ " + points[25].getNumOfCheckers() + "]\n" + 
-			   "|" + top + " | [ " + blackBar.getNumOfCheckers()+ "] | \n";
+			   "|" + top + " | [ " + black.bar.getNumOfCheckers()+ "] | \n";
 		str += "|--------------------------------+--------------------------------|      |\n";
 		for (int j = 1; j <= 12; j++)
 		{
@@ -150,7 +150,7 @@ public class Board
 			if(j == 6)
 				bottom = "  | " + bottom;
 		}
-		str+= "|" + bottom + " | [ " + redBar.getNumOfCheckers()+ "] | \n" + 
+		str+= "|" + bottom + " | [ " + red.bar.getNumOfCheckers()+ "] | \n" + 
 			  "|  12   11   10    9    8    7   |    6    5    4    3    2    1  | Rbar |" + " [ " + points[0].getNumOfCheckers() + "]\n" +
 			  "+------------------------------------------------------------------------+  B Scored\n";
 		return str;
