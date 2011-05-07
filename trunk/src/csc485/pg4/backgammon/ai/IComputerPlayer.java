@@ -1,14 +1,10 @@
 package csc485.pg4.backgammon.ai;
 
+import csc485.pg4.backgammon.gameFramework.*;
+
 public interface IComputerPlayer 
 {
-	public void startTurn();
+	public String move();
 	
-	public void findAvailableMoves();
-	
-	public void move();
-	
-	public void moveFromBar();
-	
-	public void bearOff();
+	public String moveFromBar();
 }

@@ -1,7 +1,7 @@
 package csc485.pg4.backgammon;
 
+import csc485.pg4.backgammon.ai.EasyBot;
 import csc485.pg4.backgammon.gameFramework.*;
-
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -9,6 +9,7 @@ public class Application
 {
 	private Scanner in;
 	private Game game;
+	EasyBot bot;
 	
 	public void run() throws IOException
 	{
@@ -38,22 +39,33 @@ public class Application
 				
 				if(!game.firstTurnOfGame)
 				{
-					System.out.println("Press enter to roll dice:");
-					System.in.read();
+					if(game.getCurrentPlayer().isComputer)
+					{
+						System.out.println(game.getCurrentPlayer().toString() + " has rolled the dice.");
+					}
+					else
+					{
+						System.out.println("Press enter to roll dice:");
+						System.in.read();
+					}
 					game.rollDice();
 				}
 				
 				//----if the player has checkers on their bar----
 				if(game.getCurrentPlayer().bar.getNumOfCheckers() > 0)
 				{
+					
 					if(game.canBarMove())
 					{
 						System.out.println(game.getCurrentPlayer().toString() + " has a checker on the bar that can be moved");
+						if(game.getCurrentPlayer().isComputer)
+							System.out.println(bot.moveFromBar());
 					}
 					else
 					{
 						System.out.println(game.getCurrentPlayer().toString() + " has a checker on the bar, however no moves are available.");
-						System.out.println("Please type 'skip' to end your turn.");
+						if(!game.getCurrentPlayer().isComputer)
+							System.out.println("Please type 'skip' to end your turn.");
 						game.canSkip = true;
 					}
 				}
@@ -69,29 +81,43 @@ public class Application
 			System.out.println("Current Player: " + game.getCurrentPlayer().toString());
 			System.out.println(game.getDice());
 			
-			choice = getInput();
-			
-			if(choice.equalsIgnoreCase("quit"))
+			if(game.getCurrentPlayer().isComputer)
 			{
-				System.out.println("Quitting...");
-				System.exit(0);
-			}
-			else if(choice.equalsIgnoreCase("new"))
-				startNewGame();
-			else if(choice.equalsIgnoreCase("help") || choice.equals("?"))
-				displayHelp();
-			else if(choice.equalsIgnoreCase("skip"))
-			{
+				choice = "continue";
 				if(game.canSkip)
 				{
 					game.swapPlayers();
 					game.canSkip = false;
 				}
 				else
-					System.out.println("You cannot skip right now.");
+					System.out.println(bot.move());
 			}
 			else
-				System.out.println(game.moveChecker(choice).toString());
+			{
+				choice = getInput();
+				
+				if(choice.equalsIgnoreCase("quit"))
+				{
+					System.out.println("Quitting...");
+					System.exit(0);
+				}
+				else if(choice.equalsIgnoreCase("new"))
+					startNewGame();
+				else if(choice.equalsIgnoreCase("help") || choice.equals("?"))
+					displayHelp();
+				else if(choice.equalsIgnoreCase("skip"))
+				{
+					if(game.canSkip)
+					{
+						game.swapPlayers();
+						game.canSkip = false;
+					}
+					else
+						System.out.println("You cannot skip right now.");
+				}
+				else
+					System.out.println(game.moveChecker(choice).toString());
+			}
 			
 			if(game.bothDieUsed())
 			{
@@ -142,8 +168,9 @@ public class Application
 				numPlayers = getNumPlayers();
 				if(numPlayers == 1)
 				{
-					game = new Game(new Player(getName(1),false), new Player("cpu",true));
-					//TODO: Computer player stuff
+					game = new Game(new Player(getName(1),false), new Player("easybot",true));
+					bot = new EasyBot(game);
+					
 				}
 				else if(numPlayers == 2)
 				{
