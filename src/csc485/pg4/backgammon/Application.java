@@ -39,10 +39,12 @@ public class Application
 				
 				if(!game.firstTurnOfGame)
 				{
+					//notify the user that the computer has rolled it's dice
 					if(game.getCurrentPlayer().isComputer)
 					{
 						System.out.println(game.getCurrentPlayer().toString() + " has rolled the dice.");
 					}
+					//prompt the user to roll
 					else
 					{
 						System.out.println("Press enter to roll dice:");
@@ -54,14 +56,17 @@ public class Application
 				//----if the player has checkers on their bar----
 				if(game.getCurrentPlayer().bar.getNumOfCheckers() > 0)
 				{
-					
+					//Let the user know they have a checker on the bar that can be moved
+					//If the player is a computer call the function to have it move from the bar
 					if(game.canBarMove())
 					{
 						System.out.println(game.getCurrentPlayer().toString() + " has a checker on the bar that can be moved");
 						if(game.getCurrentPlayer().isComputer)
 							System.out.println(bot.moveFromBar());
 					}
-					else
+					//if no moves are available allow the user to skip their turn
+					//if it is a computer automatically end the turn.
+					else 
 					{
 						System.out.println(game.getCurrentPlayer().toString() + " has a checker on the bar, however no moves are available.");
 						if(!game.getCurrentPlayer().isComputer)
@@ -81,6 +86,7 @@ public class Application
 			System.out.println("Current Player: " + game.getCurrentPlayer().toString());
 			System.out.println(game.getDice());
 			
+			//if the computer has no moves available skip. Otherwise play a checker
 			if(game.getCurrentPlayer().isComputer)
 			{
 				choice = "continue";
@@ -105,6 +111,7 @@ public class Application
 					startNewGame();
 				else if(choice.equalsIgnoreCase("help") || choice.equals("?"))
 					displayHelp();
+				//only if a player has no options can they skip
 				else if(choice.equalsIgnoreCase("skip"))
 				{
 					if(game.canSkip)
@@ -119,6 +126,7 @@ public class Application
 					System.out.println(game.moveChecker(choice).toString());
 			}
 			
+			//end the turn unless doubles were rolled
 			if(game.bothDieUsed())
 			{
 				if(game.isDoubles)
@@ -135,7 +143,15 @@ public class Application
 			}
 		
 		}
-		while(!choice.equals("quit"));
+		while(!choice.equals("quit") && !(game.isGameOver()));
+		
+		//One player has removed all checkers from the game. Display their name
+		if(game.isGameOver())
+		{
+			Player winner = game.getWinner();
+			
+			System.out.println(winner.getName() + " has won the game!");
+		}
 	}
 	
 	//Starts a new game by getting player names and determining order
@@ -233,7 +249,7 @@ public class Application
 		System.out.println("To move a checker use this format: <die>,<point>");
 		System.out.println("ex. To use die1 and move the checker at point 3");
 		System.out.println("you would type 'd1,3'");
-		System.out.println("If you wish to move a checker fromt the bar use");
+		System.out.println("If you wish to move a checker from the bar use");
 		System.out.println("the following format: <die>,bar");
 		System.out.println("ex. to use die1 to move from the bar type 'd1,bar'");
 	}

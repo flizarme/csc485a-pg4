@@ -206,6 +206,7 @@ public class Game
 		return d1.isUsed && d2.isUsed;
 	}
 	
+	//Point only has one checker on it. Move that checker to the bar and replace it
 	private void hit(Point destination, Die dieToUse)
 	{
 		if(currentPlayer.getColor() == Checker.Red)
@@ -346,6 +347,7 @@ public class Game
 		return true;
 	}
 	
+	//Check if it is possible for a player to move off the bar
 	public boolean canBarMove()
 	{
 		int targetPoint1 = 0;
@@ -364,6 +366,7 @@ public class Game
 			targetPoint2 = 25 - d2.getValue();
 		}
 		
+		//First check point for d1 then check for d2
 		p1 = gameBoard.points[targetPoint1];
 		p2 = gameBoard.points[targetPoint2];
 		
@@ -385,6 +388,7 @@ public class Game
 	{
 		int targetPoint = 0;
 		Point p;
+		
 		//If black rolls a 1 they have to go to point 24, 2 goes to 23, etc.
 		if(currentPlayer.getColor() == Checker.Red)
 		{
@@ -395,12 +399,14 @@ public class Game
 			targetPoint = 25 - dieToUse.getValue();		
 		}
 		
+		//Check if the target point is available 
 		p = gameBoard.points[targetPoint];
 		
 		if(p.getPlayerOccupying() == currentPlayer || p.getPlayerOccupying() == null || p.getNumOfCheckers() == 1)
 		{
 			currentPlayer.bar.removeChecker();
 			
+			//target point has one enemy on it. Hit them off
 			if(p.getPlayerOccupying() != currentPlayer && p.getNumOfCheckers() == 1)
 				hit(p,dieToUse);
 			else
@@ -418,6 +424,37 @@ public class Game
 		{
 			return new CoordinateException();
 		}
+	}
+	
+	//Check if a player has removed all checkers
+	public boolean isGameOver()
+	{
+		if(gameBoard.points[25].getNumOfCheckers() == 15)
+			return true;
+		else if(gameBoard.points[0].getNumOfCheckers() == 15)
+			return true;
+		else
+			return false;
+	}
+	
+	//Return the player that has removed all checkers from the board
+	public Player getWinner()
+	{
+		if(gameBoard.points[25].getNumOfCheckers() == 15)
+		{
+			if(player1.getColor() == Checker.Red)
+				return player1;
+			else
+				return player2;
+		}
+		else //point[0] == 15 so black is the winner
+		{
+			if(player1.getColor() == Checker.Black)
+				return player1;
+			else
+				return player2;
+		}
+		
 	}
 
 }
