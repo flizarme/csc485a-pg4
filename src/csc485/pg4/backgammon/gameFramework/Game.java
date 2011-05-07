@@ -7,7 +7,7 @@ public class Game
 	private Player player1, player2;
 	private Player currentPlayer;
 	private Die d1,d2;
-	private boolean isDoubles;
+	public boolean isDoubles;
 	public boolean isBeginningOfTurn;
 	public boolean firstTurnOfGame;
 	public boolean canSkip;
@@ -93,6 +93,12 @@ public class Game
 	{
 		return "die 1 = " + d1.getValue() + "(" + (d1.isUsed ? "used" : "not used") + ")" + "\n" 
 				+ "die 2 = " + d2.getValue() + "(" + (d2.isUsed ? "used" : "not used") + ")";
+	}
+	
+	public void resetDice()
+	{
+		d1.isUsed = false;
+		d2.isUsed = false;
 	}
 	
 	public String getBoard()

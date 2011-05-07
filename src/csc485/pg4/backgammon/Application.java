@@ -43,6 +43,7 @@ public class Application
 					game.rollDice();
 				}
 				
+				//----if the player has checkers on their bar----
 				if(game.getCurrentPlayer().bar.getNumOfCheckers() > 0)
 				{
 					if(game.canBarMove())
@@ -94,8 +95,17 @@ public class Application
 			
 			if(game.bothDieUsed())
 			{
-				game.swapPlayers();
-				game.isBeginningOfTurn = true;
+				if(game.isDoubles)
+				{
+					game.resetDice();
+					System.out.println("Doubles - Play dice again.");
+					game.isDoubles = false;
+				}
+				else
+				{
+					game.swapPlayers();
+					game.isBeginningOfTurn = true;
+				}
 			}
 		
 		}
