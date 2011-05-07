@@ -249,7 +249,7 @@ public class Game
 			{
 				//checks behind pointToMove to make sure there are no required moves behind it.
 				if(gameBoard.points[tempCoord-1].getNumOfCheckers() > 0 && dieValue != 25- pointToUse.getCoordinates())
-					return new CoordinateException();				
+					return new BearoffException();				
 				tempCoord--;
 			}
 			//There are no points before the die value that must be moved.  Player can bear off the piece.
@@ -271,7 +271,7 @@ public class Game
 			{
 				//checks behind pointToMove to make sure there are no required moves behind it
 				if(gameBoard.points[tempCoord + 1].getNumOfCheckers() > 0 && dieValue != pointToUse.getCoordinates())
-					return new CoordinateException();
+					return new BearoffException();
 				tempCoord++;
 			}
 			
@@ -418,12 +418,6 @@ public class Game
 		{
 			return new CoordinateException();
 		}
-			
-	}
-		
-	public void undo()
-	{
-		//TODO: Game.undo()
 	}
 
 }
