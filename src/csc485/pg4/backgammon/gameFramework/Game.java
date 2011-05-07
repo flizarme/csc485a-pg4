@@ -10,6 +10,7 @@ public class Game
 	private boolean isDoubles;
 	public boolean isBeginningOfTurn;
 	public boolean firstTurnOfGame;
+	public boolean canSkip;
 	
 	public Game(Player p1, Player p2)
 	{
@@ -21,6 +22,7 @@ public class Game
 		isDoubles = false;
 		isBeginningOfTurn = true;
 		firstTurnOfGame = true;
+		canSkip = false;
 	}
 	
 	public String decideTurnOrder()
@@ -127,50 +129,65 @@ public class Game
 			return new CoordinateException();
 		
 		//---------Get the user's selected point--------
-		try{tempPoint = Integer.parseInt(temp[1]);}
-		//they didn't enter a valid number
-		catch(Exception e){return new FormatException();}
-		
-		try{pointToUse = gameBoard.points[tempPoint];}
-		//They entered a number that is not a point
-		catch(Exception e){return new FormatException();}
-			
-		//-----Input was formatted correctly. Now try to move------
-		dieVal = dieToUse.getValue();
-		if(pointToUse.getPlayerOccupying() != this.currentPlayer)
-			return new CoordinateException();
-		
-		//-----Check if the player can Bear off-----
-
-		if(currentPlayer.canBearOff=checkBearOff())
-			return bearOff(pointToUse, dieToUse, dieVal);
-		
-		//-----Make sure they choose a destination in bounds-----
-		try{
-			if(currentPlayer.getColor() == Checker.Red)
-				destination = gameBoard.points[pointToUse.getCoordinates() + dieVal];
-			else
-				destination = gameBoard.points[pointToUse.getCoordinates() - dieVal];
-			}
-		catch(Exception e){return new CoordinateException();}
-		
-		if(destination == gameBoard.points[0] || destination == gameBoard.points[25])
-			return new CoordinateException();
-		
-		
-		if(destination.getPlayerOccupying() == null || destination.getPlayerOccupying() == currentPlayer)
+		if(temp[1].equalsIgnoreCase("bar"))
 		{
-			pointToUse.removeChecker();
-			destination.addChecker();
-			destination.setPlayerOccupying(currentPlayer);
-			dieToUse.isUsed = true;
+			return barMove(dieToUse);
 		}
 		else
-			if(destination.getNumOfCheckers() == 1)
-				hit(pointToUse, destination, dieToUse);
-			else
+		{
+			//---If player has checkers on bar they must type bar-----
+			if(currentPlayer.bar.getNumOfCheckers() > 0)
+				return new BarException();
+
+			try{tempPoint = Integer.parseInt(temp[1]);}
+			//they didn't enter a valid number
+			catch(Exception e){return new FormatException();}
+			
+			try{pointToUse = gameBoard.points[tempPoint];}
+			//They entered a number that is not a point
+			catch(Exception e){return new FormatException();}
+		
+			//-----Input was formatted correctly. Now try to move------
+			dieVal = dieToUse.getValue();
+			
+			//-----Make sure the point selected is owned by currentPlayer------
+			if(pointToUse.getPlayerOccupying() != this.currentPlayer)
 				return new CoordinateException();
 			
+			//-----Check if the player can Bear off-----
+	
+			if(currentPlayer.canBearOff=checkBearOff())
+				return bearOff(pointToUse, dieToUse, dieVal);
+			
+			//-----Make sure they choose a destination in bounds-----
+			try{
+				if(currentPlayer.getColor() == Checker.Red)
+					destination = gameBoard.points[pointToUse.getCoordinates() + dieVal];
+				else
+					destination = gameBoard.points[pointToUse.getCoordinates() - dieVal];
+				}
+			catch(Exception e){return new CoordinateException();}
+			
+			if(destination == gameBoard.points[0] || destination == gameBoard.points[25])
+				return new CoordinateException();
+			
+			
+			if(destination.getPlayerOccupying() == null || destination.getPlayerOccupying() == currentPlayer)
+			{
+				pointToUse.removeChecker();
+				destination.addChecker();
+				destination.setPlayerOccupying(currentPlayer);
+				dieToUse.isUsed = true;
+			}
+			else
+				if(destination.getNumOfCheckers() == 1)
+				{
+					hit(destination, dieToUse);
+					pointToUse.removeChecker();
+				}
+				else
+					return new CoordinateException();
+		}
 		
 		
 		//----move successful. no exceptions----------
@@ -183,27 +200,33 @@ public class Game
 		return d1.isUsed && d2.isUsed;
 	}
 	
-	private void hit(Point pointToUse, Point destination, Die dieToUse)
+	private void hit(Point destination, Die dieToUse)
 	{
-		pointToUse.removeChecker();
-		
 		if(currentPlayer.getColor() == Checker.Red)
 		{
-			//if red made the hit black is the one getting moved to the bar
-			gameBoard.blackBar.addChecker();
 			if(player1.getColor()==Checker.Black)
+			{
+				player1.bar.addChecker();
 				player1.onBar=true;
+			}
 			else
+			{
+				player2.bar.addChecker();
 				player2.onBar=true;
+			}
 		}
 		else
 		{
-			//if black made the hit red is getting moved to the bar
-			gameBoard.redBar.addChecker();
 			if(player1.getColor()==Checker.Red)
+			{
+				player1.bar.addChecker();
 				player1.onBar=true;
+			}
 			else
+			{
+				player2.bar.addChecker();
 				player2.onBar=true;
+			}
 		}
 		destination.setPlayerOccupying(currentPlayer);
 		dieToUse.isUsed = true;
@@ -269,7 +292,10 @@ public class Game
 		}
 		else
 			if(destination.getNumOfCheckers() == 1)
-				hit(pointToUse, destination, dieToUse);
+			{
+				hit(destination, dieToUse);
+				pointToUse.removeChecker();
+			}
 			else
 				return new CoordinateException();
 			
@@ -294,7 +320,7 @@ public class Game
 					return false;
 				tempCoord--;
 			}
-			if(gameBoard.redBar.getNumOfCheckers() != 0)
+			if(currentPlayer.bar.getNumOfCheckers() != 0)
 				return false;
 		}
 		else
@@ -307,18 +333,88 @@ public class Game
 					return false;
 				tempCoord++;
 			}
-			if(gameBoard.blackBar.getNumOfCheckers() != 0)
+			if(currentPlayer.bar.getNumOfCheckers() != 0)
 				return false;
 		}
 		
 		return true;
 	}
 	
-	public void barMove()
+	public boolean canBarMove()
 	{
-		//TODO: Game.barMove()
+		int targetPoint1 = 0;
+		int targetPoint2 = 0;
+		boolean p1Valid, p2Valid;
+		Point p1,p2;
+		//If black rolls a 1 they have to go to point 24, 2 goes to 23, etc.
+		if(currentPlayer.getColor() == Checker.Red)
+		{
+			targetPoint1 = d1.getValue();
+			targetPoint2 = d2.getValue();
+		}
+		else if(currentPlayer.getColor() == Checker.Black)
+		{
+			targetPoint1 = 25 - d1.getValue();
+			targetPoint2 = 25 - d2.getValue();
+		}
+		
+		p1 = gameBoard.points[targetPoint1];
+		p2 = gameBoard.points[targetPoint2];
+		
+		if(p1.getPlayerOccupying() == currentPlayer || p1.getPlayerOccupying() == null || p1.getNumOfCheckers() == 1)
+			p1Valid = true;
+		else
+			p1Valid = false;
+		
+		if(p2.getPlayerOccupying() == currentPlayer || p2.getPlayerOccupying() == null || p2.getNumOfCheckers() == 1)
+			p2Valid = true;
+		else
+			p2Valid = false;
+		
+		return p1Valid || p2Valid;
+		
 	}
 	
+	public MoveException barMove(Die dieToUse)
+	{
+		int targetPoint = 0;
+		Point p;
+		//If black rolls a 1 they have to go to point 24, 2 goes to 23, etc.
+		if(currentPlayer.getColor() == Checker.Red)
+		{
+			targetPoint = dieToUse.getValue();
+		}
+		else if(currentPlayer.getColor() == Checker.Black)
+		{
+			targetPoint = 25 - dieToUse.getValue();		
+		}
+		
+		p = gameBoard.points[targetPoint];
+		
+		if(p.getPlayerOccupying() == currentPlayer || p.getPlayerOccupying() == null || p.getNumOfCheckers() == 1)
+		{
+			currentPlayer.bar.removeChecker();
+			
+			if(p.getPlayerOccupying() != currentPlayer && p.getNumOfCheckers() == 1)
+				hit(p,dieToUse);
+			else
+			{
+				p.addChecker();
+				p.setPlayerOccupying(currentPlayer);
+				dieToUse.isUsed = true;
+			}
+			if(currentPlayer.bar.getNumOfCheckers() == 0)
+				currentPlayer.onBar = false;
+			
+			return new NoException(gameBoard);
+		}
+		else
+		{
+			return new CoordinateException();
+		}
+			
+	}
+		
 	public void undo()
 	{
 		//TODO: Game.undo()

@@ -4,7 +4,7 @@ public class Bar implements ICheckerSpot
 {
 	private int numCheckers;
 	
-	public Bar()
+	public Bar(Player p)
 	{
 		numCheckers = 0;
 	}
@@ -26,5 +26,5 @@ public class Bar implements ICheckerSpot
 	{
 		return numCheckers;
 	}
-
+	
 }

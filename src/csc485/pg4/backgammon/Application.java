@@ -35,12 +35,28 @@ public class Application
 			{
 				System.out.println("Current Player: " + game.getCurrentPlayer().toString());
 				System.out.println(game.getBoard());
+				
 				if(!game.firstTurnOfGame)
 				{
 					System.out.println("Press enter to roll dice:");
 					System.in.read();
 					game.rollDice();
 				}
+				
+				if(game.getCurrentPlayer().bar.getNumOfCheckers() > 0)
+				{
+					if(game.canBarMove())
+					{
+						System.out.println(game.getCurrentPlayer().toString() + " has a checker on the bar that can be moved");
+					}
+					else
+					{
+						System.out.println(game.getCurrentPlayer().toString() + " has a checker on the bar, however no moves are available.");
+						System.out.println("Please type 'skip' to end your turn.");
+						game.canSkip = true;
+					}
+				}
+				
 				game.isBeginningOfTurn = false;
 				game.firstTurnOfGame = false;
 			}
@@ -54,18 +70,25 @@ public class Application
 			
 			choice = getInput();
 			
-			if(choice.equals("quit"))
+			if(choice.equalsIgnoreCase("quit"))
 			{
 				System.out.println("Quitting...");
 				System.exit(0);
 			}
-			else if(choice.equals("new"))
+			else if(choice.equalsIgnoreCase("new"))
 				startNewGame();
-			else if(choice.equals("help") || choice.equals("?"))
+			else if(choice.equalsIgnoreCase("help") || choice.equals("?"))
 				displayHelp();
-			else if(choice.equals("undo"))
-				//TODO: write game.undo() code
-				continue;//temporary
+			else if(choice.equalsIgnoreCase("skip"))
+			{
+				if(game.canSkip)
+				{
+					game.swapPlayers();
+					game.canSkip = false;
+				}
+				else
+					System.out.println("You cannot skip right now.");
+			}
 			else
 				System.out.println(game.moveChecker(choice).toString());
 			
@@ -74,7 +97,7 @@ public class Application
 				game.swapPlayers();
 				game.isBeginningOfTurn = true;
 			}
-			
+		
 		}
 		while(!choice.equals("quit"));
 	}
@@ -170,11 +193,11 @@ public class Application
 	{
 		System.out.println("quit - exit the application");
 		System.out.println("new - start a new game");
-		System.out.println("undo - undo last action");
 		System.out.println("To move a checker use this format: <die>,<point>");
 		System.out.println("ex. To use die1 and move the checker at point 3");
-		System.out.println("you would type d1,3");
-		System.out.println("If it is the first move of the game you will");
-		System.out.println("use the dice rolled to decide the turn order.");
+		System.out.println("you would type 'd1,3'");
+		System.out.println("If you wish to move a checker fromt the bar use");
+		System.out.println("the following format: <die>,bar");
+		System.out.println("ex. to use die1 to move from the bar type 'd1,bar'");
 	}
 }

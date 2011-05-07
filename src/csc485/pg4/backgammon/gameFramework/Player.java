@@ -4,6 +4,7 @@ public class Player
 {
 	private Checker color;
 	private String name;
+	public Bar bar;
 	public boolean isComputer, canBearOff, onBar;
 	
 	public Player(String aName, boolean aComputer)
@@ -12,6 +13,7 @@ public class Player
 		this.canBearOff = false;
 		this.onBar=false;
 		this.isComputer = aComputer;
+		this.bar = new Bar(this);
 	}
 	
 	public void setColor(Checker aColor)
