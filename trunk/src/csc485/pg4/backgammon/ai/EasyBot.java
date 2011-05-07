@@ -2,6 +2,8 @@ package csc485.pg4.backgammon.ai;
 
 import csc485.pg4.backgammon.gameFramework.*;
 
+//EasyBot is the simplest possible AI implementation
+//He takes the first available move he finds
 public class EasyBot implements IComputerPlayer 
 {
 	Game game;
@@ -11,6 +13,7 @@ public class EasyBot implements IComputerPlayer
 		game = g;
 	}
 	
+	//Move handles moving a checker. The game class takes care of bearing off for us
 	@Override
 	public String move() 
 	{

@@ -14,24 +14,20 @@ public class Board
 		points = new Point[numPoints+2];
 		this.red = red;
 		this.black = black;
-		//redBar = new Bar();
-		//blackBar = new Bar();
 		createBoard();
-		
 	}
 	
 	private void createBoard()
 	{
 		for(int i = 0; i <= numPoints+1; i++)
 		{
-			/*
 			switch(i)
 			{
 			case 1:
 				points[i] = new Point(i, red, 2);
 				break;
 			case 6:
-				points[i] = new Point(i, black, 2);
+				points[i] = new Point(i, black, 5);
 				break;
 			case 8:
 				points[i] = new Point(i, black, 3);
@@ -54,53 +50,7 @@ public class Board
 			default:
 				points[i] = new Point(i);
 				break;
-			}
-			*/
-			//setup board for bear off testing
-			
-			switch(i)
-			{
-			case 1:
-				points[i] = new Point(i, black, 2);
-				break;
-			case 2:
-				points[i] = new Point(i, black, 2);
-				break;
-			case 3:
-				points[i] = new Point(i, black, 3);
-				break;
-			case 4:
-				points[i] = new Point(i, black, 3);
-				break;
-			case 5:
-				points[i] = new Point(i, black, 3);
-				break;
-			case 6:
-				points[i] = new Point(i, black, 3);
-				break;
-			case 19:
-				points[i] = new Point(i, red, 2);
-				break;	
-			case 20:
-				points[i] = new Point(i, red, 2);
-				break;
-			case 21:
-				points[i] = new Point(i, red, 3);
-				break;
-			case 22:
-				points[i] = new Point(i, red, 3);
-				break;
-			case 23:
-				points[i] = new Point(i, red, 3);
-				break;
-			case 24:
-				points[i] = new Point(i, red, 3);
-				break;
-			default:
-				points[i] = new Point(i);
-				break;
-			}
-			
+			}		
 		}
 	}
 	
